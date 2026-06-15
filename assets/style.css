@@ -74,10 +74,21 @@ body {
 .hero-grid {
   display: grid;
   grid-template-columns: 1.1fr 1fr;
+  grid-template-areas: "video discover";
   gap: 40px;
   align-items: center;
   text-align: left;
   margin-bottom: 50px;
+}
+
+.hero-grid .video-box { grid-area: video; }
+.hero-grid .discover { grid-area: discover; }
+
+/* CTA between video and discover only shows on mobile (matches reference) */
+.hero-primary-cta {
+  grid-area: cta;
+  text-align: center;
+  display: none;
 }
 
 .video-box {
@@ -175,6 +186,7 @@ body {
 
 .btn-cta {
   display: inline-block;
+  position: relative;
   background: var(--accent-orange);
   color: var(--white);
   padding: 18px 56px;
@@ -188,11 +200,68 @@ body {
   transition: transform 0.15s ease, box-shadow 0.15s ease;
   text-align: center;
   font-family: inherit;
+  overflow: hidden;
+  animation: cta-pulse 1.6s ease-in-out infinite;
 }
 
-.btn-cta:hover { transform: translateY(2px); box-shadow: 0 4px 0 var(--accent-orange-dark); }
+/* Attention-grabbing pulse */
+@keyframes cta-pulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 6px 0 var(--accent-orange-dark), 0 0 0 0 rgba(244, 123, 32, 0.5); }
+  50% { transform: scale(1.03); box-shadow: 0 6px 0 var(--accent-orange-dark), 0 0 0 14px rgba(244, 123, 32, 0); }
+}
+
+/* Sweeping shine across the button */
+.btn-cta::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.45) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-20deg);
+  animation: cta-shine 2.8s ease-in-out infinite;
+}
+
+@keyframes cta-shine {
+  0% { left: -75%; }
+  35%, 100% { left: 130%; }
+}
+
+.btn-cta:hover {
+  transform: translateY(2px) scale(1.02);
+  box-shadow: 0 4px 0 var(--accent-orange-dark);
+  animation-play-state: paused;
+}
+
 .btn-cta .te { font-size: 0.9rem; font-weight: 500; display: block; margin-top: 2px; }
 .btn-cta.center { display: block; max-width: 460px; margin: 24px auto 8px; }
+
+/* Animated arrow on CTA buttons */
+.cta-arrow {
+  display: inline-block;
+  font-weight: 800;
+  animation: cta-arrow-nudge 1s ease-in-out infinite;
+}
+
+@keyframes cta-arrow-nudge {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(6px); }
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .btn-cta,
+  .btn-cta::before,
+  .cta-arrow {
+    animation: none;
+  }
+}
 
 .hurry {
   margin: 14px 0 0;
@@ -674,7 +743,6 @@ body {
 /* ============ RESPONSIVE ============ */
 @media (max-width: 900px) {
   .hero-title { font-size: 1.9rem; }
-  .hero-grid,
   .mentor-grid,
   .journey-grid,
   .testimonials-grid,
@@ -683,11 +751,22 @@ body {
   .thank-you-hero .grid-3 {
     grid-template-columns: 1fr;
   }
+  /* Mobile hero order: video -> register button -> what you'll discover */
+  .hero-grid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "video"
+      "cta"
+      "discover";
+    gap: 24px;
+  }
+  .hero-primary-cta { display: block; }
+  .hero-primary-cta .btn-cta { width: 100%; max-width: 460px; }
   .problems-grid { grid-template-columns: repeat(2, 1fr); }
   .countdown { gap: 12px; }
   .countdown > div { min-width: 60px; }
   .countdown .num { font-size: 1.8rem; }
-  .btn-cta { padding: 16px 32px; font-size: 1.1rem; }
+  .btn-cta { padding: 16px 28px; font-size: 1.1rem; }
   .section-title { font-size: 1.5rem; }
 }
 
