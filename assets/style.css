@@ -550,7 +550,81 @@ body {
   background: var(--bg-lavender-light);
   padding: 70px 0;
   text-align: center;
+  position: relative;
+  overflow: hidden;
 }
+
+/* ---- 3D floating shapes behind the bonus cards ---- */
+.bonus-3d-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  perspective: 700px;
+}
+
+.bonus-3d-bg .shape {
+  position: absolute;
+  display: block;
+  opacity: 0.55;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* Cube — a tilted gradient block with layered faces */
+.shape-cube {
+  width: 90px;
+  height: 90px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #f9a45e 0%, #f47b20 100%);
+  box-shadow:
+    -14px 14px 0 -2px rgba(217, 103, 18, 0.35),
+    0 20px 40px rgba(217, 103, 18, 0.25);
+}
+
+/* Sphere — a soft 3D ball with a highlight */
+.shape-sphere {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 30%, #ffffff 0%, #c9b3ec 38%, #8f6fc7 100%);
+  box-shadow: 0 22px 38px rgba(108, 70, 170, 0.3);
+}
+
+/* Ring — a 3D torus-like donut */
+.shape-ring {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: transparent;
+  border: 18px solid #d9b8ff;
+  box-shadow:
+    0 18px 34px rgba(108, 70, 170, 0.28),
+    inset 0 0 16px rgba(108, 70, 170, 0.25);
+}
+
+.shape-1 { top: 8%;  left: 4%;  animation: shape-float-a 9s ease-in-out infinite; }
+.shape-2 { top: 18%; right: 6%; animation: shape-float-b 11s ease-in-out infinite; }
+.shape-3 { bottom: 12%; left: 8%; animation: shape-float-b 10s ease-in-out infinite; }
+.shape-4 { bottom: 8%; right: 5%; animation: shape-float-a 12s ease-in-out infinite; }
+.shape-5 { top: 46%; left: 1%;  animation: shape-float-a 13s ease-in-out infinite; width: 54px; height: 54px; }
+.shape-6 { top: 40%; right: 2%; animation: shape-float-b 8s ease-in-out infinite; width: 60px; height: 60px; border-width: 12px; }
+
+@keyframes shape-float-a {
+  0%, 100% { transform: translateY(0) rotateX(20deg) rotateY(-25deg) rotateZ(8deg); }
+  50%      { transform: translateY(-26px) rotateX(40deg) rotateY(15deg) rotateZ(-8deg); }
+}
+
+@keyframes shape-float-b {
+  0%, 100% { transform: translateY(0) rotateX(-15deg) rotateY(30deg) rotateZ(-6deg); }
+  50%      { transform: translateY(22px) rotateX(25deg) rotateY(-20deg) rotateZ(10deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bonus-3d-bg .shape { animation: none; }
+}
+
+.bonuses-section .container { position: relative; z-index: 1; }
 
 .bonuses-grid {
   display: grid;
@@ -558,15 +632,28 @@ body {
   gap: 22px;
   margin: 40px 0 50px;
   text-align: left;
+  perspective: 1200px;
 }
 
 .bonus-card {
   background: var(--white);
   border-radius: 12px;
   padding: 28px 22px;
-  box-shadow: 0 6px 18px rgba(70, 40, 120, 0.08);
+  box-shadow:
+    0 6px 18px rgba(70, 40, 120, 0.08),
+    0 18px 40px rgba(70, 40, 120, 0.12);
   border: 2px solid transparent;
   position: relative;
+  transform: perspective(1000px) rotateX(4deg);
+  transform-style: preserve-3d;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.bonus-card:hover {
+  transform: perspective(1000px) rotateX(0deg) translateY(-8px) scale(1.02);
+  box-shadow:
+    0 10px 24px rgba(70, 40, 120, 0.12),
+    0 30px 60px rgba(70, 40, 120, 0.22);
 }
 
 .bonus-card.highlight {
