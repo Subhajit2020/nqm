@@ -4,13 +4,54 @@
 const GOOGLE_SHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbywm-sn_ly1VgiMXaY4WE2j6YqE3s3kCxUsS5Puf-JyVD2GocWM7XhLRLO2no136RdLhQ/exec";
 
 // Target masterclass date — Wednesday, 11th March 2026 at 7:30 PM IST
-const MASTERCLASS_DATE = new Date("2026-03-11T19:30:00+05:30");
+const MASTERCLASS_DATE = new Date("2026-06-17T19:30:00+05:30");
 
 // ============================================================
 // FOOTER YEAR
 // ============================================================
 document.querySelectorAll("#year").forEach((el) => {
   el.textContent = new Date().getFullYear();
+});
+
+// ============================================================
+// WEBINAR DATE LABELS (all rendered from MASTERCLASS_DATE)
+// Any element with [data-webinar-date] is filled automatically:
+//   data-webinar-date="full" -> "Wednesday, 11th March 2026 at 7:30 P.M."
+//   data-webinar-date="date" -> "Wednesday, 11th March 2026"
+//   data-webinar-date="time" -> "7:30 P.M."
+// ============================================================
+function formatWebinarDate(part) {
+  const TZ = "Asia/Kolkata";
+  const d = MASTERCLASS_DATE;
+  const get = (opts) => d.toLocaleString("en-US", Object.assign({ timeZone: TZ }, opts));
+
+  const weekday = get({ weekday: "long" });
+  const day = parseInt(get({ day: "numeric" }), 10);
+  const month = get({ month: "long" });
+  const year = get({ year: "numeric" });
+
+  const ord = (n) => {
+    const s = ["th", "st", "nd", "rd"];
+    const v = n % 100;
+    return n + (s[(v - 20) % 10] || s[v] || s[0]);
+  };
+
+  let time = d.toLocaleTimeString("en-US", {
+    timeZone: TZ,
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+  time = time.replace("AM", "A.M.").replace("PM", "P.M.");
+
+  const dateStr = weekday + ", " + ord(day) + " " + month + " " + year;
+  if (part === "time") return time;
+  if (part === "date") return dateStr;
+  return dateStr + " at " + time;
+}
+
+document.querySelectorAll("[data-webinar-date]").forEach((el) => {
+  el.textContent = formatWebinarDate(el.getAttribute("data-webinar-date") || "full");
 });
 
 // ============================================================

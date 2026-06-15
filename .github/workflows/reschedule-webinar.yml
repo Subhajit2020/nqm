@@ -1,0 +1,41 @@
+name: Reschedule Webinar Date
+
+# Runs every Saturday at 20:00 IST (14:30 UTC) and sets the landing page
+# to count down to the upcoming Wednesday at 7:30 PM IST.
+# You can also trigger it manually from the Actions tab (Run workflow).
+on:
+  schedule:
+    - cron: "30 14 * * 6" # Saturday 14:30 UTC = 20:00 IST
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  reschedule:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: claude/nice-ride-kpr2j5
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Update webinar date to next Wednesday 7:30 PM IST
+        run: node scripts/update-webinar-date.mjs
+
+      - name: Commit and push if the date changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet; then
+            echo "No date change needed."
+          else
+            git add assets/script.js
+            git commit -m "Auto-reschedule webinar to next Wednesday 7:30 PM IST"
+            git push origin claude/nice-ride-kpr2j5
+          fi
