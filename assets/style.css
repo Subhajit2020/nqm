@@ -745,12 +745,20 @@ body {
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(28, 20, 48, 0.6);
+  background: rgba(18, 12, 32, 0.72);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
   display: none;
   align-items: center;
   justify-content: center;
   padding: 20px;
   z-index: 1000;
+  animation: overlay-fade 0.25s ease;
+}
+
+@keyframes overlay-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .modal-overlay.open {
@@ -758,70 +766,136 @@ body {
 }
 
 .modal-card {
-  background: #1f1d29;
-  border-radius: 14px;
-  padding: 34px 32px;
-  max-width: 540px;
+  background: linear-gradient(180deg, #26222f 0%, #1c1926 100%);
+  border-radius: 18px;
+  padding: 30px 32px 32px;
+  max-width: 520px;
   width: 100%;
   position: relative;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.6);
   text-align: left;
-  animation: popup-in 0.25s ease;
+  animation: popup-in 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+
+/* Glowing accent strip at the very top */
+.modal-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 24px;
+  right: 24px;
+  height: 4px;
+  border-radius: 0 0 4px 4px;
+  background: linear-gradient(90deg, var(--accent-orange), #ffb060);
 }
 
 @keyframes popup-in {
-  from { opacity: 0; transform: translateY(20px) scale(0.97); }
+  from { opacity: 0; transform: translateY(24px) scale(0.96); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
+.modal-badge {
+  display: inline-block;
+  background: rgba(255, 126, 0, 0.15);
+  color: #ff9d3c;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 126, 0, 0.35);
+  margin-bottom: 12px;
+}
+
 .modal-title {
-  margin: 0 0 18px;
-  font-size: 1.7rem;
+  margin: 0 0 20px;
+  font-size: 1.6rem;
   font-weight: 800;
-  text-align: center;
+  line-height: 1.2;
+  text-align: left;
   color: var(--white);
-  padding-right: 18px;
+  padding-right: 24px;
 }
 
 /* ----- Urgency progress bar ----- */
+.modal-progress-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+
+.modal-progress-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #c9c4d6;
+}
+
+.modal-progress-pct {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #ff9d3c;
+}
+
 .modal-progress {
-  height: 14px;
+  height: 12px;
   width: 100%;
-  background: #e7e7ef;
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 10px;
   overflow: hidden;
-  margin-bottom: 22px;
+  margin-bottom: 20px;
 }
 
 .modal-progress-fill {
   display: block;
   height: 100%;
-  width: 43%;
+  width: 86%;
   border-radius: 10px;
-  background: linear-gradient(90deg, #2f80ed, #4f9bff);
-  animation: progress-grow 2.2s ease-out forwards, progress-pulse 1.8s ease-in-out 2.2s infinite;
+  background: linear-gradient(90deg, #ff7e00, #ffb347);
+  position: relative;
+  animation: progress-grow 2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* moving shine across the bar */
+.modal-progress-fill::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.45) 50%,
+    transparent 80%
+  );
+  transform: translateX(-100%);
+  animation: progress-shine 2.4s ease-in-out 2s infinite;
 }
 
 @keyframes progress-grow {
   from { width: 8%; }
-  to { width: 43%; }
+  to { width: 86%; }
 }
 
-@keyframes progress-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
+@keyframes progress-shine {
+  0% { transform: translateX(-100%); }
+  60%, 100% { transform: translateX(100%); }
 }
 
 /* ----- Urgency message ----- */
 .modal-urgency {
   display: flex;
   align-items: center;
-  gap: 16px;
-  margin-bottom: 24px;
+  gap: 14px;
+  margin-bottom: 22px;
+  background: rgba(155, 123, 255, 0.1);
+  border: 1px solid rgba(155, 123, 255, 0.25);
+  border-radius: 12px;
+  padding: 14px 16px;
 }
 
 .modal-urgency-icon {
-  font-size: 2.2rem;
+  font-size: 1.9rem;
   flex-shrink: 0;
   animation: urgency-blink 1.2s ease-in-out infinite;
 }
@@ -833,37 +907,81 @@ body {
 
 .modal-urgency p {
   margin: 0;
-  text-align: center;
+  text-align: left;
   flex: 1;
-  font-size: 1.05rem;
+  font-size: 0.98rem;
   font-weight: 600;
   line-height: 1.4;
-  color: #9b7bff;
+  color: #c3b3ff;
 }
 
-.modal-urgency strong { color: #b89bff; }
+.modal-urgency strong { color: #ffffff; }
+
+/* ----- Fields with leading icons ----- */
+.field {
+  position: relative;
+  margin-bottom: 14px;
+}
+
+.field-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.05rem;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+#popup-optin-form .field input {
+  margin-bottom: 0;
+  padding-left: 44px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+#popup-optin-form input:focus {
+  outline: none;
+  border-color: var(--accent-orange);
+  box-shadow: 0 0 0 3px rgba(255, 126, 0, 0.25);
+}
+
+#popup-submit-btn {
+  margin-top: 8px;
+}
 
 @media (prefers-reduced-motion: reduce) {
   .modal-progress-fill,
-  .modal-urgency-icon { animation: none; }
-  .modal-progress-fill { width: 43%; }
+  .modal-progress-fill::after,
+  .modal-urgency-icon,
+  .modal-overlay,
+  .modal-card { animation: none; }
+  .modal-progress-fill { width: 86%; }
 }
 
 .modal-close {
   position: absolute;
   top: 12px;
-  right: 14px;
-  background: none;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.08);
   border: none;
-  font-size: 1.6rem;
+  border-radius: 50%;
+  font-size: 1.4rem;
   line-height: 1;
-  color: #b9b6c7;
+  color: #d6d3e0;
   cursor: pointer;
-  padding: 4px;
   z-index: 2;
+  transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
 }
 
-.modal-close:hover { color: var(--accent-orange); }
+.modal-close:hover {
+  background: var(--accent-orange);
+  color: #fff;
+  transform: rotate(90deg);
+}
 
 /* ============ FOOTER ============ */
 .site-footer {

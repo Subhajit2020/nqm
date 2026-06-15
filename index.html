@@ -314,24 +314,41 @@
   <div class="modal-overlay" id="popup-overlay">
     <div class="modal-card">
       <button type="button" class="modal-close" id="popup-close" aria-label="Close">&times;</button>
+
+      <span class="modal-badge">&#128293; LIMITED SEATS</span>
       <h3 class="modal-title">Register For Number Quest Masterclass!</h3>
 
-      <div class="modal-progress" role="progressbar" aria-valuenow="43" aria-valuemin="0" aria-valuemax="100" aria-label="Registrations filling up">
+      <div class="modal-progress-row">
+        <span class="modal-progress-label">Registrations filling fast</span>
+        <span class="modal-progress-pct">86%</span>
+      </div>
+      <div class="modal-progress" role="progressbar" aria-valuenow="86" aria-valuemin="0" aria-valuemax="100" aria-label="Registrations filling up">
         <span class="modal-progress-fill"></span>
       </div>
 
       <div class="modal-urgency">
         <span class="modal-urgency-icon" aria-hidden="true">&#9888;&#65039;</span>
-        <p><strong>57 Members</strong> spots remaining in WhatsApp Group,<br />Join Early &amp; Secure Your Spot For <strong>FREE!</strong></p>
+        <p>Only <strong>57 spots</strong> remaining in the WhatsApp Group.<br />Join Early &amp; Secure Your Spot For <strong>FREE!</strong></p>
       </div>
 
       <form id="popup-optin-form" novalidate>
-        <input type="text" id="popup-name" name="name" placeholder="Your Name" required />
-        <input type="tel" id="popup-phone" name="phone" placeholder="Your Whatsapp Number" />
-        <input type="email" id="popup-email" name="email" placeholder="Email ID" required />
-        <button type="submit" id="popup-submit-btn" class="btn-cta">Register Now For Free</button>
+        <div class="field">
+          <span class="field-icon" aria-hidden="true">&#128100;</span>
+          <input type="text" id="popup-name" name="name" placeholder="Your Name" autocomplete="name" required />
+        </div>
+        <div class="field">
+          <span class="field-icon" aria-hidden="true">&#128241;</span>
+          <input type="tel" id="popup-phone" name="phone" placeholder="Your WhatsApp Number" autocomplete="tel" />
+        </div>
+        <div class="field">
+          <span class="field-icon" aria-hidden="true">&#9993;&#65039;</span>
+          <input type="email" id="popup-email" name="email" placeholder="Email ID" autocomplete="email" required />
+        </div>
+        <button type="submit" id="popup-submit-btn" class="btn-cta">
+          Register Now For Free <span class="cta-arrow" aria-hidden="true">&raquo;</span>
+        </button>
         <p id="popup-form-status" class="form-status" role="status"></p>
-        <p class="privacy">Your information is 100% secure and will never be shared.</p>
+        <p class="privacy"><span aria-hidden="true">&#128274;</span> Your information is 100% secure and will never be shared.</p>
       </form>
     </div>
   </div>
