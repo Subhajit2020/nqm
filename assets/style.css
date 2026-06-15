@@ -39,8 +39,12 @@ body {
 
 /* ============ HERO ============ */
 .hero-section {
-  background: var(--bg-lavender);
-  padding: 50px 0 60px;
+  background-color: #0d0820;
+  background-image: url("https://img.flexifunnels.com/images/3386/gznjy_1310_Untitleddesign20231130T171706.479.png");
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  padding: 60px 0 70px;
   text-align: center;
 }
 
@@ -49,13 +53,13 @@ body {
   font-weight: 800;
   line-height: 1.2;
   margin: 0 0 16px;
-  color: var(--text-dark);
+  color: var(--white);
 }
 
 .hero-sub-telugu {
   font-family: 'Noto Sans Telugu', sans-serif;
   font-size: 1.05rem;
-  color: var(--text-dark);
+  color: #f0eaff;
   max-width: 850px;
   margin: 0 auto 24px;
 }
@@ -64,7 +68,7 @@ body {
   font-size: 1.3rem;
   font-weight: 600;
   margin: 0 0 36px;
-  color: var(--text-dark);
+  color: var(--white);
 }
 
 .hero-grid {
@@ -94,7 +98,7 @@ body {
 .discover h2 {
   font-size: 1.6rem;
   margin: 0 0 18px;
-  color: var(--text-dark);
+  color: var(--white);
 }
 
 .discover-list {
@@ -107,7 +111,7 @@ body {
   position: relative;
   padding: 8px 0 8px 28px;
   font-size: 1rem;
-  color: var(--text-dark);
+  color: #f0eaff;
 }
 
 .discover-list li::before {
@@ -128,6 +132,12 @@ body {
 
 .cta-block.light .countdown-title,
 .cta-block.light .hurry { color: var(--text-dark); }
+
+/* Hero countdown sits on the dark cosmic background */
+.hero-section .countdown-title { color: #b794f4; }
+.hero-section .countdown .num { color: var(--white); }
+.hero-section .countdown small { color: #d8cdf0; }
+.hero-section .hurry { color: #ffb4ad; }
 
 .countdown-title {
   font-size: 1.5rem;
