@@ -3,7 +3,7 @@
 // Paste the Web App URL you get after deploying the Apps Script
 // (see apps-script/Code.gs and SETUP.md) between the quotes below.
 // ============================================================
-const GOOGLE_SHEET_WEB_APP_URL = "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
+const GOOGLE_SHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbywm-sn_ly1VgiMXaY4WE2j6YqE3s3kCxUsS5Puf-JyVD2GocWM7XhLRLO2no136RdLhQ/exec";
 
 // Footer year on every page
 document.querySelectorAll("#year").forEach((el) => {
