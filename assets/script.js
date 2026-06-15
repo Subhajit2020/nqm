@@ -97,7 +97,6 @@ function wireOptinForm(formId, nameId, emailId, phoneId, statusId, submitId) {
   });
 }
 
-wireOptinForm("optin-form", "name", "email", "phone", "form-status", "submit-btn");
 wireOptinForm("popup-optin-form", "popup-name", "popup-email", "popup-phone", "popup-form-status", "popup-submit-btn");
 
 // ============================================================

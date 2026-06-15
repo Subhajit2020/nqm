@@ -239,24 +239,6 @@ body {
 }
 
 /* ============ FORM ============ */
-.form-card {
-  background: var(--white);
-  border-radius: 14px;
-  padding: 32px;
-  max-width: 520px;
-  margin: 0 auto;
-  text-align: left;
-  box-shadow: 0 12px 36px rgba(70, 40, 120, 0.18);
-  border-top: 6px solid var(--accent-orange);
-}
-
-.form-card h3 {
-  margin: 0 0 4px;
-  font-size: 1.5rem;
-  text-align: center;
-  color: var(--text-dark);
-}
-
 .form-sub {
   text-align: center;
   color: var(--text-muted);
@@ -264,7 +246,6 @@ body {
   font-size: 0.95rem;
 }
 
-#optin-form label,
 #popup-optin-form label {
   display: block;
   font-weight: 600;
@@ -273,7 +254,6 @@ body {
   color: var(--text-dark);
 }
 
-#optin-form input,
 #popup-optin-form input {
   width: 100%;
   padding: 12px 14px;
@@ -284,13 +264,11 @@ body {
   font-family: inherit;
 }
 
-#optin-form input:focus,
 #popup-optin-form input:focus {
   outline: 2px solid var(--accent-orange);
   border-color: var(--accent-orange);
 }
 
-#submit-btn,
 #popup-submit-btn {
   width: 100%;
   margin-top: 20px;
