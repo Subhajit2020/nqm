@@ -983,6 +983,113 @@ body {
   transform: rotate(90deg);
 }
 
+/* ============ LIVE SOCIAL PROOF ============ */
+.social-proof {
+  position: fixed;
+  left: 18px;
+  bottom: 18px;
+  z-index: 900;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 320px;
+  pointer-events: none;
+}
+
+.live-viewers {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  background: rgba(20, 16, 32, 0.92);
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.live-viewers strong { color: #ff9d3c; }
+
+.live-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #2ecc71;
+  box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7);
+  animation: live-pulse 1.6s ease-out infinite;
+}
+
+@keyframes live-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7); }
+  70% { box-shadow: 0 0 0 8px rgba(46, 204, 113, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
+}
+
+.signup-toast {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 12px 16px 12px 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+  border: 1px solid #eee;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.signup-toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.toast-avatar {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  color: #fff;
+  font-size: 1.05rem;
+  background: linear-gradient(135deg, var(--accent-orange), #ffb060);
+}
+
+.toast-body { min-width: 0; }
+
+.toast-text {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-dark);
+}
+.toast-text strong { color: var(--text-dark); }
+
+.toast-sub {
+  margin: 2px 0 0;
+  font-size: 0.78rem;
+  color: #2ca05a;
+  font-weight: 600;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-dot { animation: none; }
+  .signup-toast { transition: opacity 0.2s ease; }
+}
+
+@media (max-width: 600px) {
+  .social-proof {
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    max-width: none;
+  }
+}
+
 /* ============ FOOTER ============ */
 .site-footer {
   background: var(--bg-dark);

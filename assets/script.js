@@ -128,3 +128,61 @@ if (popupOverlay) {
 document.addEventListener("keydown", function (event) {
   if (event.key === "Escape") closePopup();
 });
+
+// ============================================================
+// LIVE SOCIAL PROOF — viewers count + signup toasts
+// ============================================================
+(function () {
+  // ---- Live viewers count (gently fluctuates) ----
+  const countEl = document.getElementById("live-count");
+  if (countEl) {
+    let viewers = 147;
+    setInterval(function () {
+      const delta = Math.floor(Math.random() * 7) - 3; // -3..+3
+      viewers = Math.min(213, Math.max(118, viewers + delta));
+      countEl.textContent = viewers;
+    }, 4000);
+  }
+
+  // ---- Rotating signup toasts ----
+  const toast = document.getElementById("signup-toast");
+  const nameEl = document.getElementById("toast-name");
+  const cityEl = document.getElementById("toast-city");
+  const avatarEl = document.getElementById("toast-avatar");
+  if (!toast || !nameEl || !cityEl || !avatarEl) return;
+
+  const names = [
+    "Suresh", "Rabi", "Lakshmi", "Venkatesh", "Priya", "Anand",
+    "Divya", "Ramesh", "Kavya", "Srinivas", "Meena", "Karthik",
+    "Saritha", "Naveen", "Deepa", "Mohan", "Swetha", "Bhaskar",
+  ];
+  const cities = [
+    "Hyderabad", "Khammam", "Chennai", "Bengaluru", "Vijayawada",
+    "Coimbatore", "Visakhapatnam", "Madurai", "Warangal", "Kochi",
+    "Tirupati", "Mysuru", "Guntur", "Nellore", "Trichy", "Kurnool",
+    "Mangaluru", "Rajahmundry",
+  ];
+
+  function pick(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+  }
+
+  function showToast() {
+    const name = pick(names);
+    const city = pick(cities);
+    nameEl.textContent = name;
+    cityEl.textContent = city;
+    avatarEl.textContent = name.charAt(0);
+    toast.classList.add("show");
+    setTimeout(function () {
+      toast.classList.remove("show");
+    }, 5000);
+  }
+
+  // First toast shortly after load, then repeat with a randomized gap
+  setTimeout(function loop() {
+    showToast();
+    const gap = 8000 + Math.random() * 5000; // 8–13s between toasts
+    setTimeout(loop, gap);
+  }, 3500);
+})();
