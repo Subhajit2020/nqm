@@ -434,6 +434,23 @@ body {
   font-size: 1.2rem;
 }
 
+.avatar-img {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 2px solid var(--accent-orange);
+  background: #f0eaf7;
+}
+
+.stars-img {
+  display: block;
+  height: 18px;
+  width: auto;
+  margin-top: 6px;
+}
+
 .t-head h4 { margin: 0; font-size: 1.05rem; }
 .t-head p { margin: 2px 0 0; color: var(--text-muted); font-size: 0.85rem; }
 
