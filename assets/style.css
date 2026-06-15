@@ -126,7 +126,7 @@ body {
 }
 
 .discover-list li::before {
-  content: "\2713";
+  content: "\1FA76";
   position: absolute;
   left: 0;
   top: 8px;
