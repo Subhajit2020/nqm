@@ -1099,6 +1099,33 @@ body {
   }
 }
 
+/* ============ STICKY MOBILE CTA ============ */
+/* Hidden on desktop; revealed only on mobile via media query below */
+.sticky-cta {
+  display: none;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 950;
+  padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+  background: rgba(13, 8, 32, 0.92);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.35);
+}
+
+.sticky-cta .btn-cta {
+  display: block;
+  width: 100%;
+  padding: 13px 20px;
+  font-size: 1.05rem;
+  box-shadow: 0 4px 0 var(--accent-orange-dark);
+}
+
+.sticky-cta .btn-cta .te { font-size: 0.78rem; margin-top: 1px; }
+
 /* ============ FOOTER ============ */
 .site-footer {
   background: var(--bg-dark);
@@ -1130,6 +1157,11 @@ body {
   }
   .hero-primary-cta { display: block; }
   .hero-primary-cta .btn-cta { width: 100%; max-width: 460px; }
+  /* Always-visible sticky CTA so the button is on screen the moment users land */
+  .sticky-cta { display: block; }
+  body { padding-bottom: 78px; }
+  /* Lift social proof above the sticky bar */
+  .social-proof { bottom: 84px; }
   .problems-grid { grid-template-columns: repeat(2, 1fr); }
   .countdown { gap: 12px; }
   .countdown > div { min-width: 60px; }
