@@ -47,19 +47,21 @@ updateCountdowns();
 setInterval(updateCountdowns, 1000);
 
 // ============================================================
-// OPT-IN FORM
+// OPT-IN FORM(S)
 // ============================================================
-const form = document.getElementById("optin-form");
-if (form) {
-  const statusEl = document.getElementById("form-status");
-  const submitBtn = document.getElementById("submit-btn");
+function wireOptinForm(formId, nameId, emailId, phoneId, statusId, submitId) {
+  const form = document.getElementById(formId);
+  if (!form) return;
+
+  const statusEl = document.getElementById(statusId);
+  const submitBtn = document.getElementById(submitId);
 
   form.addEventListener("submit", function (event) {
     event.preventDefault();
 
-    const name = document.getElementById("name").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const phone = document.getElementById("phone").value.trim();
+    const name = document.getElementById(nameId).value.trim();
+    const email = document.getElementById(emailId).value.trim();
+    const phone = document.getElementById(phoneId).value.trim();
 
     if (!name || !email) {
       statusEl.textContent = "Please fill in your name and email.";
@@ -94,3 +96,36 @@ if (form) {
       });
   });
 }
+
+wireOptinForm("optin-form", "name", "email", "phone", "form-status", "submit-btn");
+wireOptinForm("popup-optin-form", "popup-name", "popup-email", "popup-phone", "popup-form-status", "popup-submit-btn");
+
+// ============================================================
+// CTA POPUP MODAL
+// ============================================================
+const popupOverlay = document.getElementById("popup-overlay");
+const popupClose = document.getElementById("popup-close");
+
+function openPopup() {
+  if (popupOverlay) popupOverlay.classList.add("open");
+}
+
+function closePopup() {
+  if (popupOverlay) popupOverlay.classList.remove("open");
+}
+
+document.querySelectorAll(".js-open-popup").forEach((btn) => {
+  btn.addEventListener("click", openPopup);
+});
+
+if (popupClose) popupClose.addEventListener("click", closePopup);
+
+if (popupOverlay) {
+  popupOverlay.addEventListener("click", function (event) {
+    if (event.target === popupOverlay) closePopup();
+  });
+}
+
+document.addEventListener("keydown", function (event) {
+  if (event.key === "Escape") closePopup();
+});

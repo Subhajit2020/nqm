@@ -55,7 +55,7 @@
           <div><span class="num" data-minutes>00</span><small>Minutes</small></div>
           <div><span class="num" data-seconds>00</span><small>Seconds</small></div>
         </div>
-        <a href="#signup" class="btn-cta">Register Now for FREE<br /><span class="te">ఇప్పుడు నమోదు చేసుకోండి</span></a>
+        <button type="button" class="btn-cta js-open-popup">Register Now for FREE<br /><span class="te">ఇప్పుడు నమోదు చేసుకోండి</span></button>
         <p class="hurry">HURRY, We Can Only Fit 100 Attendees<br />Per Session, and Seats Are Filling Fast!</p>
       </div>
     </div>
@@ -152,7 +152,7 @@
           <div><span class="num" data-minutes>00</span><small>Minutes</small></div>
           <div><span class="num" data-seconds>00</span><small>Seconds</small></div>
         </div>
-        <a href="#signup" class="btn-cta">Register Now for FREE<br /><span class="te">ఇప్పుడు నమోదు చేసుకోండి</span></a>
+        <button type="button" class="btn-cta js-open-popup">Register Now for FREE<br /><span class="te">ఇప్పుడు నమోదు చేసుకోండి</span></button>
         <p class="hurry">HURRY, We Can Only Fit 100 Attendees<br />Per Session, and Seats Are Filling Fast!</p>
       </div>
     </div>
@@ -187,7 +187,7 @@
         </div>
       </div>
 
-      <a href="#signup" class="btn-cta center">Register Now for FREE<br /><span class="te">ఇప్పుడు నమోదు చేసుకోండి</span></a>
+      <button type="button" class="btn-cta center js-open-popup">Register Now for FREE<br /><span class="te">ఇప్పుడు నమోదు చేసుకోండి</span></button>
       <p class="hurry white">HURRY, We Can Only Fit 100 Attendees<br />Per Session, and Seats Are Filling Fast!</p>
     </div>
   </section>
@@ -227,7 +227,7 @@
           <div><span class="num" data-minutes>00</span><small>Minutes</small></div>
           <div><span class="num" data-seconds>00</span><small>Seconds</small></div>
         </div>
-        <a href="#signup" class="btn-cta">Register Now for FREE<br /><span class="te">ఇప్పుడు నమోదు చేసుకోండి</span></a>
+        <button type="button" class="btn-cta js-open-popup">Register Now for FREE<br /><span class="te">ఇప్పుడు నమోదు చేసుకోండి</span></button>
         <p class="hurry">HURRY, We Can Only Fit 100 Attendees<br />Per Session, and Seats Are Filling Fast!</p>
       </div>
     </div>
@@ -272,7 +272,7 @@
           <div><span class="num" data-minutes>00</span><small>Minutes</small></div>
           <div><span class="num" data-seconds>00</span><small>Seconds</small></div>
         </div>
-        <a href="#signup" class="btn-cta">Register Now for FREE<br /><span class="te">ఇప్పుడు నమోదు చేసుకోండి</span></a>
+        <button type="button" class="btn-cta js-open-popup">Register Now for FREE<br /><span class="te">ఇప్పుడు నమోదు చేసుకోండి</span></button>
         <p class="hurry">HURRY, We Can Only Fit 100 Attendees<br />Per Session, and Seats Are Filling Fast!</p>
       </div>
     </div>
@@ -283,6 +283,26 @@
       <p>&copy; <span id="year"></span> Baba Prashad WIN. All Rights Reserved.</p>
     </div>
   </footer>
+
+  <!-- ===== POPUP MODAL ===== -->
+  <div class="modal-overlay" id="popup-overlay">
+    <div class="modal-card">
+      <button type="button" class="modal-close" id="popup-close" aria-label="Close">&times;</button>
+      <h3>Reserve Your Free Seat</h3>
+      <p class="form-sub">Enter your details below to register for the FREE Masterclass</p>
+      <form id="popup-optin-form" novalidate>
+        <label for="popup-name">Full Name</label>
+        <input type="text" id="popup-name" name="name" placeholder="Your full name" required />
+        <label for="popup-email">Email Address</label>
+        <input type="email" id="popup-email" name="email" placeholder="you@example.com" required />
+        <label for="popup-phone">Phone Number</label>
+        <input type="tel" id="popup-phone" name="phone" placeholder="+91 9999999999" />
+        <button type="submit" id="popup-submit-btn" class="btn-cta">Register Now for FREE</button>
+        <p id="popup-form-status" class="form-status" role="status"></p>
+        <p class="privacy">Your information is 100% secure and will never be shared.</p>
+      </form>
+    </div>
+  </div>
 
   <script src="assets/script.js"></script>
 </body>
