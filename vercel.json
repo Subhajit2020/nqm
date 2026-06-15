@@ -1,0 +1,8 @@
+{
+  "redirects": [
+    { "source": "/", "destination": "/number-quest-masterclass", "permanent": true }
+  ],
+  "rewrites": [
+    { "source": "/number-quest-masterclass", "destination": "/index.html" }
+  ]
+}
