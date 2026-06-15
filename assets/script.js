@@ -133,6 +133,26 @@ document.addEventListener("keydown", function (event) {
 // LIVE SOCIAL PROOF — viewers count + signup toasts
 // ============================================================
 (function () {
+  // ---- Reveal only once the hero's primary CTA has scrolled out of view,
+  // so this never covers the CTA on first landing (esp. on mobile) ----
+  const proof = document.querySelector(".social-proof");
+  const heroCta = document.querySelector(".hero-primary-cta");
+  if (proof) {
+    if (heroCta && "IntersectionObserver" in window) {
+      const observer = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            proof.classList.toggle("visible", !entry.isIntersecting);
+          });
+        },
+        { threshold: 0 }
+      );
+      observer.observe(heroCta);
+    } else {
+      proof.classList.add("visible");
+    }
+  }
+
   // ---- Live viewers count (gently fluctuates) ----
   const countEl = document.getElementById("live-count");
   if (countEl) {

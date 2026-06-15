@@ -994,6 +994,14 @@ body {
   gap: 10px;
   max-width: 320px;
   pointer-events: none;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.social-proof.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .live-viewers {
@@ -1079,6 +1087,7 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .live-dot { animation: none; }
   .signup-toast { transition: opacity 0.2s ease; }
+  .social-proof { transition: opacity 0.2s ease; }
 }
 
 @media (max-width: 600px) {
