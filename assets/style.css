@@ -483,21 +483,11 @@ body {
 
 .photo-img {
   width: 100%;
-  max-width: 320px;
+  max-width: 340px;
   height: auto;
-  border-radius: 16px;
-  object-fit: cover;
   margin: 0 auto 16px;
-  border: 4px solid var(--accent-orange);
   display: block;
-  background: #2a2a2a;
-}
-
-/* Local fallback portrait is a small square crop — keep it circular */
-.photo-img.photo-fallback {
-  width: 220px;
-  height: 220px;
-  border-radius: 50%;
+  filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.45));
 }
 
 .mentor-photo h3 { margin: 0; font-size: 1.4rem; }
