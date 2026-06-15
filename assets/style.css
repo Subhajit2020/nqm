@@ -345,12 +345,13 @@ body {
 
 #popup-optin-form input {
   width: 100%;
-  padding: 12px 14px;
+  padding: 15px 16px;
   border: 1px solid #d8d2ec;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 1rem;
-  background: #faf9ff;
+  background: #ffffff;
   font-family: inherit;
+  margin-bottom: 14px;
 }
 
 #popup-optin-form input:focus {
@@ -376,7 +377,7 @@ body {
   margin: 14px 0 0;
   text-align: center;
   font-size: 0.78rem;
-  color: var(--text-muted);
+  color: #9a97a8;
 }
 
 /* ============ TESTIMONIALS ============ */
@@ -757,14 +758,13 @@ body {
 }
 
 .modal-card {
-  background: var(--white);
+  background: #1f1d29;
   border-radius: 14px;
-  padding: 36px 32px;
-  max-width: 460px;
+  padding: 34px 32px;
+  max-width: 540px;
   width: 100%;
   position: relative;
-  border-top: 6px solid var(--accent-orange);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
   text-align: left;
   animation: popup-in 0.25s ease;
 }
@@ -774,11 +774,79 @@ body {
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-.modal-card h3 {
-  margin: 0 0 4px;
-  font-size: 1.5rem;
+.modal-title {
+  margin: 0 0 18px;
+  font-size: 1.7rem;
+  font-weight: 800;
   text-align: center;
-  color: var(--text-dark);
+  color: var(--white);
+  padding-right: 18px;
+}
+
+/* ----- Urgency progress bar ----- */
+.modal-progress {
+  height: 14px;
+  width: 100%;
+  background: #e7e7ef;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 22px;
+}
+
+.modal-progress-fill {
+  display: block;
+  height: 100%;
+  width: 43%;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #2f80ed, #4f9bff);
+  animation: progress-grow 2.2s ease-out forwards, progress-pulse 1.8s ease-in-out 2.2s infinite;
+}
+
+@keyframes progress-grow {
+  from { width: 8%; }
+  to { width: 43%; }
+}
+
+@keyframes progress-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* ----- Urgency message ----- */
+.modal-urgency {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.modal-urgency-icon {
+  font-size: 2.2rem;
+  flex-shrink: 0;
+  animation: urgency-blink 1.2s ease-in-out infinite;
+}
+
+@keyframes urgency-blink {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+.modal-urgency p {
+  margin: 0;
+  text-align: center;
+  flex: 1;
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: #9b7bff;
+}
+
+.modal-urgency strong { color: #b89bff; }
+
+@media (prefers-reduced-motion: reduce) {
+  .modal-progress-fill,
+  .modal-urgency-icon { animation: none; }
+  .modal-progress-fill { width: 43%; }
 }
 
 .modal-close {
@@ -789,9 +857,10 @@ body {
   border: none;
   font-size: 1.6rem;
   line-height: 1;
-  color: var(--text-muted);
+  color: #b9b6c7;
   cursor: pointer;
   padding: 4px;
+  z-index: 2;
 }
 
 .modal-close:hover { color: var(--accent-orange); }
