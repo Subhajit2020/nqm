@@ -1,7 +1,7 @@
 // ============================================================
 // CONFIG
 // ============================================================
-const GOOGLE_SHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbywm-sn_ly1VgiMXaY4WE2j6YqE3s3kCxUsS5Puf-JyVD2GocWM7XhLRLO2no136RdLhQ/exec";
+const GOOGLE_SHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwguhnuCL3Bw-_vLcYzKUTJJINwQMTZNbPpwuI4tdonWb3Da47I2ksUfSPSh_EukBPG_g/exec";
 
 // Target masterclass date — Saturday, 20th June 2026 at 7:30 PM IST
 const MASTERCLASS_DATE = new Date("2026-06-20T19:30:00+05:30");
