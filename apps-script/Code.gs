@@ -14,7 +14,7 @@
  */
 
 // Leads for the current session are collected in this tab.
-var LEAD_SHEET_NAME = "20 June";
+var LEAD_SHEET_NAME = "24 June";
 
 function doPost(e) {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
