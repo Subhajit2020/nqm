@@ -4,7 +4,7 @@
 const GOOGLE_SHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxMqIHttWbHBi1WrKlxjTaOr878vt0jHTQD3uVcejQiWxnQ4cG4TqOlUQ1ynBiS7mC9Ww/exec";
 
 // Target masterclass date — Sunday, 12th July 2026 at 7:30 PM IST
-const MASTERCLASS_DATE = new Date("2026-07-12T19:30:00+05:30");
+const MASTERCLASS_DATE = new Date("2026-07-15T19:30:00+05:30");
 
 // ============================================================
 // FOOTER YEAR
