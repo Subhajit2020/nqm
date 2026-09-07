@@ -3,8 +3,8 @@
 // ============================================================
 const GOOGLE_SHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxMqIHttWbHBi1WrKlxjTaOr878vt0jHTQD3uVcejQiWxnQ4cG4TqOlUQ1ynBiS7mC9Ww/exec";
 
-// Target masterclass date — Thursday, 10th September 2026 at 7:30 PM IST
-const MASTERCLASS_DATE = new Date("2026-09-10T19:30:00+05:30");
+// Target masterclass date — Wednesday, 9th September 2026 at 7:30 PM IST
+const MASTERCLASS_DATE = new Date("2026-09-09T19:30:00+05:30");
 
 // ============================================================
 // FOOTER YEAR
