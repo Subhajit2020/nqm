@@ -119,31 +119,24 @@ function wireOptinForm(formId, nameId, emailId, phoneId, statusId, submitId) {
     formData.append("email", email);
     formData.append("phone", phone);
 
-    // Fire-and-forget the lead to Google Sheets, then redirect IMMEDIATELY.
-    // We never wait for the (slow) Apps Script round-trip, so users land on
-    // the thank-you page instantly instead of staring at a frozen button.
-    let beaconSent = false;
+    // Fire the lead to Google Sheets, then redirect IMMEDIATELY.
+    // We use the same no-cors POST that reliably reaches Apps Script, but we
+    // DON'T await it — `keepalive` lets the request finish in the background
+    // even after we navigate away, so the user lands on the thank-you page
+    // instantly instead of staring at a frozen button.
     try {
-      if (navigator.sendBeacon) {
-        beaconSent = navigator.sendBeacon(GOOGLE_SHEET_WEB_APP_URL, formData);
-      }
-    } catch (e) {
-      beaconSent = false;
-    }
+      fetch(GOOGLE_SHEET_WEB_APP_URL, {
+        method: "POST",
+        mode: "no-cors",
+        body: formData,
+        keepalive: true,
+      }).catch(function () {});
+    } catch (e) {}
 
-    if (!beaconSent) {
-      // Fallback: keepalive lets the request finish even after we navigate away.
-      try {
-        fetch(GOOGLE_SHEET_WEB_APP_URL, {
-          method: "POST",
-          mode: "no-cors",
-          body: formData,
-          keepalive: true,
-        }).catch(function () {});
-      } catch (e) {}
-    }
-
-    window.location.href = "thank-you.html";
+    // Give the request a tiny head start to leave the browser, then redirect.
+    setTimeout(function () {
+      window.location.href = "thank-you.html";
+    }, 150);
   });
 }
 
