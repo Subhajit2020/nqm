@@ -111,30 +111,39 @@ function wireOptinForm(formId, nameId, emailId, phoneId, statusId, submitId) {
     }
 
     submitBtn.disabled = true;
-    statusEl.textContent = "Submitting...";
-    statusEl.className = "form-status";
+    statusEl.textContent = "Success! Redirecting...";
+    statusEl.className = "form-status success";
 
     const formData = new FormData();
     formData.append("name", name);
     formData.append("email", email);
     formData.append("phone", phone);
 
-    fetch(GOOGLE_SHEET_WEB_APP_URL, {
-      method: "POST",
-      mode: "no-cors",
-      body: formData,
-    })
-      .then(function () {
-        statusEl.textContent = "Success! Redirecting...";
-        statusEl.className = "form-status success";
-        window.location.href = "thank-you.html";
-      })
-      .catch(function () {
-        submitBtn.disabled = false;
-        statusEl.textContent =
-          "Something went wrong. Please try again.";
-        statusEl.className = "form-status error";
-      });
+    // Fire-and-forget the lead to Google Sheets, then redirect IMMEDIATELY.
+    // We never wait for the (slow) Apps Script round-trip, so users land on
+    // the thank-you page instantly instead of staring at a frozen button.
+    let beaconSent = false;
+    try {
+      if (navigator.sendBeacon) {
+        beaconSent = navigator.sendBeacon(GOOGLE_SHEET_WEB_APP_URL, formData);
+      }
+    } catch (e) {
+      beaconSent = false;
+    }
+
+    if (!beaconSent) {
+      // Fallback: keepalive lets the request finish even after we navigate away.
+      try {
+        fetch(GOOGLE_SHEET_WEB_APP_URL, {
+          method: "POST",
+          mode: "no-cors",
+          body: formData,
+          keepalive: true,
+        }).catch(function () {});
+      } catch (e) {}
+    }
+
+    window.location.href = "thank-you.html";
   });
 }
 
