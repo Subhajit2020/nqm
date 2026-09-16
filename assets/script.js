@@ -114,48 +114,45 @@ function wireOptinForm(formId, nameId, emailId, phoneId, statusId, submitId) {
     statusEl.textContent = "Success! Redirecting...";
     statusEl.className = "form-status success";
 
-    // Submit the lead through a hidden iframe. The browser fully owns this
-    // POST, so it is reliably delivered to Apps Script (unlike a background
-    // fetch that gets cancelled on navigation). As soon as Apps Script
-    // responds (iframe "load"), we redirect — with a safety timeout so the
-    // user is NEVER stuck waiting even if the script is slow or unreachable.
-    var redirected = false;
-    function goToThankYou() {
-      if (redirected) return;
-      redirected = true;
-      window.location.href = "thank-you.html";
+    // Build a URL-ENCODED body. This is the format Apps Script reads reliably
+    // from e.parameter — the earlier beacon attempt failed only because
+    // FormData sends multipart, which Apps Script doesn't parse from a beacon.
+    var params = new URLSearchParams();
+    params.append("name", name);
+    params.append("email", email);
+    params.append("phone", phone);
+
+    // Send the lead in the BACKGROUND so it survives navigation, then redirect
+    // IMMEDIATELY. sendBeacon is built exactly for "send data as the page goes
+    // away"; the browser delivers it after we've already left. A URL-encoded
+    // Blob keeps the content-type CORS-safelisted (no preflight) and parseable.
+    var delivered = false;
+    try {
+      if (navigator.sendBeacon) {
+        var blob = new Blob([params.toString()], {
+          type: "application/x-www-form-urlencoded",
+        });
+        delivered = navigator.sendBeacon(GOOGLE_SHEET_WEB_APP_URL, blob);
+      }
+    } catch (e) {
+      delivered = false;
     }
 
-    var iframe = document.createElement("iframe");
-    iframe.name = "nqm-lead-sink-" + Date.now();
-    iframe.style.display = "none";
-    document.body.appendChild(iframe);
-    iframe.addEventListener("load", goToThankYou);
+    if (!delivered) {
+      // Fallback: keepalive fetch also survives navigation.
+      try {
+        fetch(GOOGLE_SHEET_WEB_APP_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: params.toString(),
+          keepalive: true,
+        }).catch(function () {});
+      } catch (e) {}
+    }
 
-    var hiddenForm = document.createElement("form");
-    hiddenForm.method = "POST";
-    hiddenForm.action = GOOGLE_SHEET_WEB_APP_URL;
-    hiddenForm.target = iframe.name;
-    hiddenForm.style.display = "none";
-
-    var fields = { name: name, email: email, phone: phone };
-    Object.keys(fields).forEach(function (key) {
-      var input = document.createElement("input");
-      input.type = "hidden";
-      input.name = key;
-      input.value = fields[key];
-      hiddenForm.appendChild(input);
-    });
-
-    document.body.appendChild(hiddenForm);
-    hiddenForm.submit();
-
-    // Anti-hang net only: redirect after 8s if the server never responds.
-    // This is deliberately long so it NEVER fires during a normal (even cold)
-    // Apps Script response — redirecting early would cancel the in-flight POST
-    // and lose the lead. Once the endpoint is warm, "load" fires in well under
-    // a second, so the redirect still feels instant for real users.
-    setTimeout(goToThankYou, 8000);
+    // Redirect right away — the lead is already on its way in the background.
+    window.location.href = "thank-you.html";
   });
 }
 
