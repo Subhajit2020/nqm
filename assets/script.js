@@ -111,48 +111,31 @@ function wireOptinForm(formId, nameId, emailId, phoneId, statusId, submitId) {
     }
 
     submitBtn.disabled = true;
-    statusEl.textContent = "Success! Redirecting...";
-    statusEl.className = "form-status success";
+    statusEl.textContent = "Submitting...";
+    statusEl.className = "form-status";
 
-    // Build a URL-ENCODED body. This is the format Apps Script reads reliably
-    // from e.parameter — the earlier beacon attempt failed only because
-    // FormData sends multipart, which Apps Script doesn't parse from a beacon.
-    var params = new URLSearchParams();
-    params.append("name", name);
-    params.append("email", email);
-    params.append("phone", phone);
+    // Proven-working delivery: send the lead as multipart FormData and WAIT
+    // for Apps Script to confirm before redirecting. This is the exact request
+    // shape that reliably lands in the sheet. Reliability first — the redirect
+    // follows as soon as the server responds.
+    var formData = new FormData();
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("phone", phone);
 
-    // Send the lead in the BACKGROUND so it survives navigation, then redirect
-    // IMMEDIATELY. sendBeacon is built exactly for "send data as the page goes
-    // away"; the browser delivers it after we've already left. A URL-encoded
-    // Blob keeps the content-type CORS-safelisted (no preflight) and parseable.
-    var delivered = false;
-    try {
-      if (navigator.sendBeacon) {
-        var blob = new Blob([params.toString()], {
-          type: "application/x-www-form-urlencoded",
-        });
-        delivered = navigator.sendBeacon(GOOGLE_SHEET_WEB_APP_URL, blob);
-      }
-    } catch (e) {
-      delivered = false;
+    function goToThankYou() {
+      window.location.href = "thank-you.html";
     }
 
-    if (!delivered) {
-      // Fallback: keepalive fetch also survives navigation.
-      try {
-        fetch(GOOGLE_SHEET_WEB_APP_URL, {
-          method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: params.toString(),
-          keepalive: true,
-        }).catch(function () {});
-      } catch (e) {}
-    }
-
-    // Redirect right away — the lead is already on its way in the background.
-    window.location.href = "thank-you.html";
+    fetch(GOOGLE_SHEET_WEB_APP_URL, {
+      method: "POST",
+      mode: "no-cors",
+      body: formData,
+    })
+      .then(goToThankYou)
+      // Even on a network error, send them to the thank-you page rather than
+      // stranding them on the form.
+      .catch(goToThankYou);
   });
 }
 
