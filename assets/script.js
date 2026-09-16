@@ -150,9 +150,12 @@ function wireOptinForm(formId, nameId, emailId, phoneId, statusId, submitId) {
     document.body.appendChild(hiddenForm);
     hiddenForm.submit();
 
-    // Safety net: if the server is slow, redirect anyway after 2s. The POST
-    // has already left the browser by then, so the lead is still recorded.
-    setTimeout(goToThankYou, 2000);
+    // Anti-hang net only: redirect after 8s if the server never responds.
+    // This is deliberately long so it NEVER fires during a normal (even cold)
+    // Apps Script response — redirecting early would cancel the in-flight POST
+    // and lose the lead. Once the endpoint is warm, "load" fires in well under
+    // a second, so the redirect still feels instant for real users.
+    setTimeout(goToThankYou, 8000);
   });
 }
 
