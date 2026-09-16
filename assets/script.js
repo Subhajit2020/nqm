@@ -114,29 +114,45 @@ function wireOptinForm(formId, nameId, emailId, phoneId, statusId, submitId) {
     statusEl.textContent = "Success! Redirecting...";
     statusEl.className = "form-status success";
 
-    const formData = new FormData();
-    formData.append("name", name);
-    formData.append("email", email);
-    formData.append("phone", phone);
-
-    // Fire the lead to Google Sheets, then redirect IMMEDIATELY.
-    // We use the same no-cors POST that reliably reaches Apps Script, but we
-    // DON'T await it — `keepalive` lets the request finish in the background
-    // even after we navigate away, so the user lands on the thank-you page
-    // instantly instead of staring at a frozen button.
-    try {
-      fetch(GOOGLE_SHEET_WEB_APP_URL, {
-        method: "POST",
-        mode: "no-cors",
-        body: formData,
-        keepalive: true,
-      }).catch(function () {});
-    } catch (e) {}
-
-    // Give the request a tiny head start to leave the browser, then redirect.
-    setTimeout(function () {
+    // Submit the lead through a hidden iframe. The browser fully owns this
+    // POST, so it is reliably delivered to Apps Script (unlike a background
+    // fetch that gets cancelled on navigation). As soon as Apps Script
+    // responds (iframe "load"), we redirect — with a safety timeout so the
+    // user is NEVER stuck waiting even if the script is slow or unreachable.
+    var redirected = false;
+    function goToThankYou() {
+      if (redirected) return;
+      redirected = true;
       window.location.href = "thank-you.html";
-    }, 150);
+    }
+
+    var iframe = document.createElement("iframe");
+    iframe.name = "nqm-lead-sink-" + Date.now();
+    iframe.style.display = "none";
+    document.body.appendChild(iframe);
+    iframe.addEventListener("load", goToThankYou);
+
+    var hiddenForm = document.createElement("form");
+    hiddenForm.method = "POST";
+    hiddenForm.action = GOOGLE_SHEET_WEB_APP_URL;
+    hiddenForm.target = iframe.name;
+    hiddenForm.style.display = "none";
+
+    var fields = { name: name, email: email, phone: phone };
+    Object.keys(fields).forEach(function (key) {
+      var input = document.createElement("input");
+      input.type = "hidden";
+      input.name = key;
+      input.value = fields[key];
+      hiddenForm.appendChild(input);
+    });
+
+    document.body.appendChild(hiddenForm);
+    hiddenForm.submit();
+
+    // Safety net: if the server is slow, redirect anyway after 2s. The POST
+    // has already left the browser by then, so the lead is still recorded.
+    setTimeout(goToThankYou, 2000);
   });
 }
 
