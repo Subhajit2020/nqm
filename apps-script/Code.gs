@@ -2,30 +2,39 @@
  * Apps Script web app that receives opt-in form submissions and
  * appends them as a new row in the master Google Sheet.
  *
- * All new leads are written to the tab named in LEAD_SHEET_NAME below.
- * If that tab doesn't exist yet, it's created automatically with a
- * header row, so you don't have to set it up by hand.
+ * New leads are written to the spreadsheet identified by SPREADSHEET_ID
+ * below (the "NQM | 2026 | November" sheet), on the tab named LEAD_SHEET_NAME.
+ * Writing by ID (instead of getActiveSpreadsheet) means this works no matter
+ * which spreadsheet the script project is bound to.
  *
- * To collect a new batch in a fresh tab (e.g. for the next session),
- * just change LEAD_SHEET_NAME and re-deploy:
+ * To collect into a different spreadsheet later, change SPREADSHEET_ID and
+ * re-deploy:
  *   Deploy -> Manage deployments -> Edit (pencil) -> New version -> Deploy
  *
  * Setup instructions: see ../SETUP.md
  */
 
-// Leads for the current session are collected in this tab.
-var LEAD_SHEET_NAME = "19 September";
+// Target spreadsheet: "NQM | 2026 | November"
+var SPREADSHEET_ID = "1YRcdombnFBwFFF4YWihYbJNY1nVX6Apcuf4EoSLM584";
+
+// Leads are collected on this tab inside that spreadsheet.
+var LEAD_SHEET_NAME = "Leads";
 
 function doPost(e) {
   try {
-    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var ss = SpreadsheetApp.openById(SPREADSHEET_ID);
 
     // Look up the tab; create it (with a header row) only if missing.
-    // Using getSheetByName + a null check avoids the "sheet already exists"
-    // error that insertSheet throws when the tab is already there.
     var sheet = ss.getSheetByName(LEAD_SHEET_NAME);
     if (!sheet) {
-      sheet = ss.insertSheet(LEAD_SHEET_NAME);
+      // Reuse the default first sheet if it's still the blank "Sheet1".
+      var first = ss.getSheets()[0];
+      if (first && first.getName() === "Sheet1" && first.getLastRow() <= 1) {
+        first.setName(LEAD_SHEET_NAME);
+        sheet = first;
+      } else {
+        sheet = ss.insertSheet(LEAD_SHEET_NAME);
+      }
       sheet.appendRow(["Timestamp", "Name", "Email", "Phone"]);
     }
 
@@ -53,12 +62,10 @@ function getParams(e) {
   }
   if (e && e.postData && e.postData.contents) {
     var body = e.postData.contents;
-    // Try JSON first.
     try {
       var obj = JSON.parse(body);
       if (obj && typeof obj === "object") return obj;
     } catch (ignore) {}
-    // Fall back to a url-encoded query string.
     var out = {};
     body.split("&").forEach(function (pair) {
       var kv = pair.split("=");
@@ -74,7 +81,7 @@ function getParams(e) {
 // A quick health check: opening the /exec URL in a browser hits doGet and
 // should show {"result":"alive", ...}. If you see that, the deployment works.
 function doGet() {
-  return json({ result: "alive", sheet: LEAD_SHEET_NAME, time: new Date() });
+  return json({ result: "alive", spreadsheet: SPREADSHEET_ID, sheet: LEAD_SHEET_NAME, time: new Date() });
 }
 
 function json(obj) {
