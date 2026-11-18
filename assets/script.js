@@ -1,7 +1,7 @@
 // ============================================================
 // CONFIG
 // ============================================================
-const GOOGLE_SHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxMqIHttWbHBi1WrKlxjTaOr878vt0jHTQD3uVcejQiWxnQ4cG4TqOlUQ1ynBiS7mC9Ww/exec";
+const GOOGLE_SHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyvy-xw1X33ODDQx7nVk3oreTzBylqPmTFiCfvQZej65zmbMTiE89Novj8qs2fJ55edtg/exec";
 
 // Target masterclass date — Friday, 20th November 2026 at 7:30 PM IST
 const MASTERCLASS_DATE = new Date("2026-11-20T19:30:00+05:30");
